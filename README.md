@@ -1,7 +1,7 @@
 # CytofResearch
 Research code for CyTOF data analysis using Bayesian feature allocation model.
 
-# Emulating the environment used for producing results
+## Emulating the environment used for producing results
 In Julia, run the following.
 
 ```julia
