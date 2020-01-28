@@ -1,22 +1,23 @@
 SHELL = /bin/bash
 
-.PHONY: all reproduce getcbdata
-
-### Make variables
-cb_transformed_data_url = https://raw.githubusercontent.com/luiarthur/cytof-data/master/data/cb/cb_transformed.csv
-
-path_to_cb_data = runs/data/cb_transformed.csv
+.PHONY: all reproduce clean-data
 
 ### Make commands ###
 all: reproduce
 
 # Reproduce results (figures, files, etc.)
-reproduce: getcbdata
-	@echo 'TODO'
+reproduce: recreate-all-data
+	@echo TODO
 
-# Download transformed CB data.
-# For data info, see: https://github.com/luiarthur/cytof-data
-getcbdata: $(path_to_cb_data)
+# Recreate data used in paper
+# - CB Data
+# - Simulated data I (small)
+# - Simulated data II (large)
+recreate-all-data:
+	@cd runs/cb && make getcbdata -s
+	@cd runs/sim-study && make createSimData --no-print-directory
 
-$(path_to_cb_data):
-	wget $(cb_transformed_data_url) -O $(path_to_cb_data)
+# Remove data used in paper. (In case something goes wrong.)
+clean-data:
+	@echo "Removing CB and simulated data in `runs/data/`"
+	rm -f runs/data/*
