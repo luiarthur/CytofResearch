@@ -12,10 +12,4 @@ include("MCMC/MCMC.jl")
 include("Model/Model.jl")
 include("VB/VB.jl")
 
-# TODO: get rid of RCall, use Plots with GR backend.
-# include("Plot/Plot.jl")
-
-# For R plots
-include("R/Plots.jl")
-
 end # module
