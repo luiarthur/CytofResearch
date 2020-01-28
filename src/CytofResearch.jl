@@ -1,4 +1,4 @@
-module Cytof5
+module CytofResearch
 #= Note:
 Julia uses Gamma(shape, scale) and InverseGamma(shape, scale).
 Note that InverseGamma(shape, scale) IS my preferred parameterization.

@@ -6,7 +6,6 @@ export metLogAdaptive, metLogitAdaptive
 
 include("gibbs.jl")
 include("TuningParam.jl")
-include("Conjugate.jl")
 include("Fitness.jl")
 include("Util.jl")
 
