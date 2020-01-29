@@ -243,7 +243,12 @@ function cytof_fit(init::State, c::Constants, d::Data;
                               loglike=loglike, flushOutput=flushOutput,
                               printlnAfterMsg=!(computeDIC || computeLPML))
 
-  mega_out = out, lastState, loglike
+  # Create dictionary to store results
+  results = Dict{Symbol, Any}()
+
+  results[:out] = out
+  results[:lastState] = lastState
+  results[:loglike] = loglike
 
   if computeDIC || computeLPML
     LPML = computeLPML ? MCMC.computeLPML(cpoStream) : NaN
@@ -261,12 +266,12 @@ function cytof_fit(init::State, c::Constants, d::Data;
       println("$k => $v")
     end
 
-    mega_out = mega_out ..., metrics
+    results[:metrics] = metrics
   end
 
   if computedden
-    mega_out = mega_out ..., dden
+    results[:dden] = dden
   end
 
-  return mega_out
+  return results
 end

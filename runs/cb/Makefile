@@ -2,7 +2,15 @@ SHELL = /bin/bash
 
 .PHONY: all  getcbdata
 .PHONY: run-cb-fam  run-cb-fam-missmech
-.PHONY:	preproc postproc  metrics
+.PHONY:	preproc  postproc  metrics
+
+# TODO:
+# - [X] getcbdata
+# - [ ] run-cb-fam
+# - [ ] run-cb-fam-missmech
+# - [X] preproc
+# - [ ] postproc
+# - [ ] metrics
 
 ### Make variables ###
 data_dir = ../data
