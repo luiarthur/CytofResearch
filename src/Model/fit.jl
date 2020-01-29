@@ -1,12 +1,66 @@
 
 """
-printFreq: defaults to 0 => prints every 10%. turn off printing by 
-           setting to -1.
+Fits the feature allocation model (FAM) as shown in the paper via MCMC.
+
+# Arguments <defaults>:
+
+- `init::State`: Inital state.
+
+- `c::Constants`: Model constants.
+
+- `d::Data`: Model data.
+
+- `nmcmc::Int`<1000>: Number of mcmc iterations to do post burn-in.
+   If `thins` is not the default, the number of samples obtained for each
+   `monitor` may not be `nmcmc`.
+
+- `nburn::Int`<1000>: Number of iterations for burn in.
+
+- `monitors::Vector{Vector{Symbol}}`
+   <[[:Z, :lam, :W], :v, :sig2, :delta, :alpha, :eta, :eps]]>:
+   A list of monitors, where each monitor is a list of symbols.  If a symbol
+   appears in a monitor, it is stored and returned at the end of the MCMC. The
+   symbols have to correspond to fields in the `State` object.
+
+- `fix::Vector{Symbol}`<[]>: A list of parameters (which should be a field in the
+   `State` object) to fix at the initial value. (i.e.  if :Z appears in `fix`,
+   then Z is never updated.) This is for debugging purposes.
+
+- `thins::Vector{Int}<[1]>`: A list of integers with the same length as
+   monitors. The first integer is the factor to thin the first group of
+   parameters (monitor). So if `thins[1]`=2 and `nmcmc`=2000, then 
+   1000=`nmcmc/thins[1]` samples will be obtained for `monitors[1]`.
+                        
+- `thin_dden::Int`<1>: Samples of density-estimates of the data are stored.
+   This argument is to thin the samples.
+
+- `printFreq::Int`<0>: Print frequency. Defaults to 0 => prints every 10%.
+  turn off printing by setting to -1. If `printFreq` = 2, loglikelihood and
+  time will be printed every 2 mcmc iterations.
+
+- `flushOutput::Bool`<false>: Whether to flush output to `stdout`.
+
+- `computeDIC::Bool`<false>: Whether to compute DIC.
+
+- `computeLPML::Bool`:<false>: Whether to compute LPML.
+
+- `computedden::Bool`<false>: Whether to compute data density estimates.
+
+- `sb_ibp::Bool`<false>: Whether to use the stick-break construction of IBP.
+  If `false`, the regular IBP is used, and a Gibbs step is available. 
+  Otherwise, an anto-tuned metropolis step is used.
+
+- `use_repulsive::Bool`<false>: Whether to use the repulsive FAM.
+
+- `joint_update_Z::Bool`<false>: Whether to jointly update elements in Z.
+
+- `verbose::Bool`<1>: Verbosity of output. 0 for bare minimum to none.
+  1 for basic output. Greater than 1 for full on debug mode.
 """
 function cytof_fit(init::State, c::Constants, d::Data;
                    nmcmc::Int=1000, nburn::Int=1000, 
                    monitors=[[:Z, :lam, :W, :v,
-                              :sig2, :delta, :alpha, :v,
+                              :sig2, :delta, :alpha, 
                               :eta, :eps]],
                    fix::Vector{Symbol}=Symbol[],
                    thins::Vector{Int}=[1],
