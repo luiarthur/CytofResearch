@@ -25,7 +25,7 @@ println("Finished loading libraries on workers node ...")
 @everywhere function fit(K::Int)
   nsamps_to_thin(nsamps::Int, nmcmc::Int) = max(1, div(nmcmc, nsamps))
 
-  # TODO. See Cytof5/sims/cb/cb.jl
+  # TODO: See Cytof5/sims/cb/{cb.jl,run}
 
   init = #TODO
   c = #TODO
