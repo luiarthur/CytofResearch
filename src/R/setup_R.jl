@@ -8,7 +8,7 @@ rplotlib() = R"source($RPLOT_SOURCE, chdir=TRUE)"
 end # Rplots
 
 #= TEST
-using Cytof5
-Cytof5.Rplots.RSOURCE_DIR
-Cytof5.Rplots.rplotlib()
+using CytofResearch
+CytofResearch.Rplots.RSOURCE_DIR
+CytofResearch.Rplots.rplotlib()
 =#

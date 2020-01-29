@@ -24,9 +24,9 @@ include("genInitialState.jl")
 include("fit.jl")
 
 #=
-precompile(cytof5_fit, (State, Constants, Data, Int, Int,
-                        Vector{Vector{Symbol}}, Vector{Int}, Bool, Int, Bool,
-                        Bool, Bool))
+precompile(cytof_fit, (State, Constants, Data, Int, Int,
+                       Vector{Vector{Symbol}}, Vector{Int}, Bool, Int, Bool,
+                       Bool, Bool))
 =#
 
 end # Model

@@ -1,21 +1,22 @@
+
 """
 printFreq: defaults to 0 => prints every 10%. turn off printing by 
            setting to -1.
 """
-function cytof5_fit(init::State, c::Constants, d::Data;
-                    nmcmc::Int=1000, nburn::Int=1000, 
-                    monitors=[[:Z, :lam, :W, :v,
-                               :sig2, :delta, :alpha, :v,
-                               :eta, :eps]],
-                    fix::Vector{Symbol}=Symbol[],
-                    thins::Vector{Int}=[1],
-                    thin_dden::Int=1,
-                    printFreq::Int=0, flushOutput::Bool=false,
-                    computeDIC::Bool=false, computeLPML::Bool=false,
-                    computedden::Bool=false,
-                    sb_ibp::Bool=false,
-                    use_repulsive::Bool=false, joint_update_Z::Bool=false,
-                    verbose::Int=1)
+function cytof_fit(init::State, c::Constants, d::Data;
+                   nmcmc::Int=1000, nburn::Int=1000, 
+                   monitors=[[:Z, :lam, :W, :v,
+                              :sig2, :delta, :alpha, :v,
+                              :eta, :eps]],
+                   fix::Vector{Symbol}=Symbol[],
+                   thins::Vector{Int}=[1],
+                   thin_dden::Int=1,
+                   printFreq::Int=0, flushOutput::Bool=false,
+                   computeDIC::Bool=false, computeLPML::Bool=false,
+                   computedden::Bool=false,
+                   sb_ibp::Bool=false,
+                   use_repulsive::Bool=false, joint_update_Z::Bool=false,
+                   verbose::Int=1)
 
   if verbose >= 1
     fixed_vars_str = join(fix, ", ")
