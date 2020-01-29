@@ -11,7 +11,7 @@ reproduce: recreate-all-data \
 	@echo TODO
 
 # Recreate data used in paper
-# - CB Data
+# - CB Data (transformed and pre-processed)
 # - Simulated data I (small)
 # - Simulated data II (large)
 recreate-all-data:
