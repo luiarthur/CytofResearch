@@ -46,6 +46,12 @@ metrics:
 run-cb-fam: getcbdata preproc
 	julia run_cb_fam.jl $(NPROC_CB) &> results/run_cb_fam.log &
 
+# Kill all CB run jobs
+kill-cb-runs:
+	kill `cat results/run_cb_fam.log | grep -oP '(?<=Worker pids:).*'`
+	kill `cat results/run_cb_fam.log | grep -oP '(?<=Master node pid:).*'`
+
+
 # Run CB analysis for two more missing mechanisms, for the best K.
 run-cb-fam-missmech: getcbdata preproc
 	@echo TODO
