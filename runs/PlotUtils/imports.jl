@@ -7,6 +7,8 @@ using CytofResearch
 using BSON
 using StatsBase
 using LaTeXStrings
+using DataFrames
+using CSV
 include(joinpath(@__DIR__, "salso.jl"))
 
 import PyCall, PyPlot

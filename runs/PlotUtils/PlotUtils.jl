@@ -58,13 +58,13 @@ end
 function make_yz(y, Zs, Ws, lams, imgdir; vlim, 
                  w_thresh=.01, lw=3,
                  Z_true=nothing, 
+                 markernames=[],
                  fs_y=rcParams["font.size"],
                  fs_z=rcParams["font.size"],
                  fs_ycbar=rcParams["font.size"],
                  fs_zcbar=rcParams["font.size"])
   # Make img dir if needed
   mkpath(imgdir)
-  mkpath("$(imgdir)/txt")
 
   I = length(y)
   for i in 1:I
@@ -79,7 +79,8 @@ function make_yz(y, Zs, Ws, lams, imgdir; vlim,
     # plot Yi, lami
     plt.figure(figsize=(6, 6))
     plot_yz.plot_y(yi, Wi, lami, vlim=vlim, cm=blue2red.cm(9), lw=lw,
-                   fs_xlab=fs_y, fs_ylab=fs_y, fs_lab=fs_y, fs_cbar=fs_ycbar)
+                   fs_xlab=fs_y, fs_ylab=fs_y, fs_lab=fs_y, fs_cbar=fs_ycbar,
+                   markernames=markernames)
     plt.savefig("$(imgdir)/y$(i).pdf", bbox_inches="tight")
     plt.close()
 
@@ -87,7 +88,7 @@ function make_yz(y, Zs, Ws, lams, imgdir; vlim,
     plt.figure(figsize=(6, 6))
     plot_yz.plot_Z(Zi, Wi, lami, w_thresh=w_thresh, add_colorbar=false,
                    fs_lab=fs_z, fs_celltypes=fs_z, fs_markers=fs_z,
-                   fs_cbar=fs_zcbar)
+                   fs_cbar=fs_zcbar, markernames=markernames)
     plt.savefig("$(imgdir)/Z$(i).pdf", bbox_inches="tight")
     plt.close()
   end
@@ -96,7 +97,7 @@ function make_yz(y, Zs, Ws, lams, imgdir; vlim,
     # plot Z true
     plt.figure(figsize=(6, 6))
     plot_yz.plot_Z_only(Z_true, fs=fs_z,
-                        xlab="cell phenotypes", ylab="markers",
+                        xlab="cell subpopulations", ylab="markers",
                         rotate_xticks=false)
     plt.savefig("$(imgdir)/Z_true.pdf", bbox_inches="tight")
     plt.close()
@@ -104,7 +105,7 @@ function make_yz(y, Zs, Ws, lams, imgdir; vlim,
     # plot ZT true
     plt.figure(figsize=(6, 6))
     plot_yz.plot_Z_only(Z_true', fs=fs_z,
-                        xlab="markers", ylab="cell phenotype")
+                        xlab="markers", ylab="cell subpopulations")
     plt.savefig("$(imgdir)/ZT_true.pdf", bbox_inches="tight")
     plt.close()
   end
@@ -119,11 +120,12 @@ function make_metrics(different_K_runs_dir, outputfname; thresh,
   for (root, dirs, files) in walkdir(different_K_runs_dir)
     for file in files
       if file == outputfname
-        # Parse Kmcmc
-        Kmcmc = parse(Int, grepKmcmcfn(splitdir(root)[2]).match)
-
         # Get path to output
         path_to_output = joinpath(root, file)
+        println(path_to_output)
+
+        # Parse Kmcmc
+        Kmcmc = parse(Int, grepKmcmcfn(splitdir(root)[2]).match)
 
         # Load output
         output = BSON.load(path_to_output)
@@ -151,16 +153,26 @@ function make_metrics(different_K_runs_dir, outputfname; thresh,
   metrics_dir = joinpath(different_K_runs_dir, "metrics")
   mkpath(metrics_dir)
 
-  # Plot DIC
+  # Plot Calibration metric
   plt.plot([metrics[K][:cmetric] for K in Kmcmcs],
            [metrics[K][:LPML] for K in Kmcmcs], marker="o")
   for K in Kmcmcs
     plt.text(metrics[K][:cmetric], metrics[K][:LPML], K)
   end
-  plt.xlabel(L"number of \$W_{i,k}\$ < 10%")
+  plt.xlabel(L"number of $W_{i,k}$ < 10%")
   plt.ylabel("LPML")
-  plt.savefig(joinpath(metrics_dir, "dic.pdf"), bbox_inches="tight")
+  plt.savefig(joinpath(metrics_dir, "calibration_metric.pdf"),
+              bbox_inches="tight")
   plt.close()
+
+  # Plot LPML, DIC
+  for metric in [:LPML, :DIC]
+    plt.plot(Kmcmcs, map(K -> metrics[K][metric], Kmcmcs), marker="o")
+    plt.xlabel("K")
+    plt.ylabel(String(metric))
+    plt.savefig(joinpath(metrics_dir, "$(metric).pdf"), bbox_inches="tight")
+    plt.close()
+  end
 
 
   return metrics
