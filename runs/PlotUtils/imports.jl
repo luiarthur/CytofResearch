@@ -5,10 +5,21 @@ Pkg.activate(path_to_env)
 
 using CytofResearch
 using BSON
+using StatsBase
+using LaTeXStrings
+include(joinpath(@__DIR__, "salso.jl"))
 
-import PyCall, PyPlot, Seaborn
+import PyCall, PyPlot
 const plt = PyPlot.plt
-const sns = Seaborn
+PyPlot.matplotlib.use("Agg")
+
+#= Interactive plot
+PyPlot.matplotlib.use("TkAgg")
+=#
+#= Non-interactive plot 
+PyPlot.matplotlib.use("Agg")
+=#
+
 
 # TODO
 # Steal things from: Cytof5/sims/repfam_fs/test
