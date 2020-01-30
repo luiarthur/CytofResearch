@@ -125,7 +125,7 @@ Kmcmcs = collect(3:3:33)
 numjobs = length(Kmcmcs)
 status = pmap(fit,
               Kmcmcs, fill(NMCMC, numjobs),
-              fill(NBURN, numjobs), fill(dat, numjobs)
+              fill(NBURN, numjobs), fill(dat, numjobs),
               on_error=identity)
 status_sanitized = map(s -> s == nothing ? "success" : s, status)
 
