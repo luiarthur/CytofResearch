@@ -38,8 +38,6 @@ Fits the feature allocation model (FAM) as shown in the paper via MCMC.
   turn off printing by setting to -1. If `printFreq` = 2, loglikelihood and
   time will be printed every 2 mcmc iterations.
 
-- `flushOutput::Bool`<false>: Whether to flush output to `stdout`.
-
 - `computeDIC::Bool`<false>: Whether to compute DIC.
 
 - `computeLPML::Bool`:<false>: Whether to compute LPML.
@@ -65,7 +63,7 @@ function cytof_fit(init::State, c::Constants, d::Data;
                    fix::Vector{Symbol}=Symbol[],
                    thins::Vector{Int}=[1],
                    thin_dden::Int=1,
-                   printFreq::Int=0, flushOutput::Bool=false,
+                   printFreq::Int=0,
                    computeDIC::Bool=false, computeLPML::Bool=false,
                    computedden::Bool=false,
                    sb_ibp::Bool=false,
@@ -77,8 +75,8 @@ function cytof_fit(init::State, c::Constants, d::Data;
     if fixed_vars_str == ""
       fixed_vars_str = "nothing"
     end
-    println("fixing: $fixed_vars_str")
-    println("Use stick-breaking IBP: $(sb_ibp)")
+    printlnflush("fixing: $fixed_vars_str")
+    printlnflush("Use stick-breaking IBP: $(sb_ibp)")
   end
 
   @assert printFreq >= -1
@@ -111,7 +109,7 @@ function cytof_fit(init::State, c::Constants, d::Data;
 
   function printMsg(iter::Int, msg::String)
     if printFreq > 0 && iter % printFreq == 0
-      print(msg)
+      printflush(msg)
     end
   end
 
@@ -151,16 +149,20 @@ function cytof_fit(init::State, c::Constants, d::Data;
           for n in 1:d.N[i]
             y_inj_is_missing = (d.m[i][n, j] == 1)
 
+            # NOTE: This is Conditional DIC, which treats missing values
+            # as additional parameters. The p(m_obs | y_obs, beta) term
+            # is excluded because it is a constant due to beta being fixed.
+            # See: http://www.bias-project.org.uk/papers/DIC.pdf
+            #
             # NOTE: Refer to `../compute_loglike.jl` for reasoning.
             if y_inj_is_missing
-
               # Compute p(m_inj | y_inj, theta) term.
               ll += log(param.p[i][n, j])
+            else
+              # Compute p(y_inj | theta) term.
+              ll += logpdf(Normal(param.mu[i][n, j], param.sig[i][n]),
+                           param.y[i][n, j])
             end
-
-            # Compute p(y_inj | theta) term.
-            ll += logpdf(Normal(param.mu[i][n, j], param.sig[i][n]),
-                         param.y[i][n, j])
           end
         end
       end
@@ -219,34 +221,31 @@ function cytof_fit(init::State, c::Constants, d::Data;
     end
 
     printMsg(iter, "\n")
-    if flushOutput
-      flush(stdout)
-    end
   end
 
   if isinf(compute_loglike(init, c, d, normalize=true))
-    println("Warning: Initial state yields likelihood of zero.")
+    printlnflush("Warning: Initial state yields likelihood of zero.")
     msg = """
     It is likely the case that the initialization of missing values
     is not consistent with the provided missing mechanism. The MCMC
     will almost certainly reject the initial values and sample new
     ones in its place.
     """
-    println(join(split(msg), " "))
+    printlnflush(join(split(msg), " "))
   else
-    println("")
+    printlnflush()
   end
 
   out, lastState = MCMC.gibbs(init, update!, monitors=monitors,
                               thins=thins, nmcmc=nmcmc, nburn=nburn,
                               printFreq=printFreq,
-                              loglike=loglike, flushOutput=flushOutput,
+                              loglike=loglike,
                               printlnAfterMsg=!(computeDIC || computeLPML))
 
   # Create dictionary to store results
   results = Dict{Symbol, Any}()
 
-  results[:out] = out
+  results[:out] = out  # monitors
   results[:lastState] = lastState
   results[:loglike] = loglike
 
@@ -260,10 +259,10 @@ function cytof_fit(init::State, c::Constants, d::Data;
                    :DIC => Dmean + pD,
                    :Dmean => Dmean,
                    :pD => pD)
-    println()
-    println("metrics:")
+    printlnflush()
+    printlnflush("metrics:")
     for (k, v) in metrics
-      println("$k => $v")
+      printlnflush("$k => $v")
     end
 
     results[:metrics] = metrics

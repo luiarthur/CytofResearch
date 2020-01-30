@@ -19,7 +19,6 @@ include("Constants.jl")
 include("Tuners.jl")
 include("repFAM/repFAM.jl")
 include("update.jl")
-include("FeatureSelect/FeatureSelect.jl")
 include("genInitialState.jl")
 include("fit.jl")
 

@@ -40,18 +40,6 @@ end
 
 
 """
-log info with println and flush
-"""
-function logger(x; newline=true)
-  if newline
-    println(x)
-  else
-    print(x)
-  end
-  flush(stdout)
-end
-
-"""
 solve for inverse gamma parameters
 """
 function solve_ig_params(; mu::Float64, sig2::Float64)
@@ -117,3 +105,26 @@ function loadCB(path_to_data; ElType::Type=Float64)
   end
 end
 
+
+"""
+This is a shorthand for `begin print(x); flush(io) end `
+"""
+printflush(x...; io=stdout) = begin print(x...); flush(io) end
+
+
+"""
+This is a shorthand for `begin println(x); flush(io) end`
+"""
+printlnflush(x...; io=stdout) = begin println(x...); flush(io) end
+
+
+"""
+Redirects stdout to a file.
+"""
+function redirect_stdout_to_file(f::Function, path::String)
+  open(path, "w") do io
+    redirect_stdout(io) do
+      f()
+    end
+  end
+end

@@ -64,7 +64,6 @@ function gibbs(init::T,
                thins::Vector{Int}=deepcopy(thin_default),
                nmcmc::Int64=1000, nburn::Int=0,
                printFreq::Int=0, loglike=missing,
-               flushOutput::Bool=false,
                printlnAfterMsg::Bool=true) where T
 
   @assert printFreq >= -1
@@ -78,12 +77,12 @@ function gibbs(init::T,
 
   # Checking number of monitors.
   numMonitors = length(monitors)
-  println("Number of monitors: $(numMonitors)")
+  println("Number of monitors: $(numMonitors)"); flush(stdout)
   @assert numMonitors == length(thins)
 
   # Check monitor
   if numMonitors == 0
-    println("Using default monitor.")
+    println("Using default monitor."); flush(stdout)
     fnames = [ fname for fname in fieldnames(typeof(init)) ]
     append!(monitors, [fnames])
     append!(thins, 1)
@@ -94,7 +93,7 @@ function gibbs(init::T,
   numSamps = [ div(nmcmc, thins[i]) for i in 1:numMonitors ]
 
   if printFreq > 0
-    println("Preallocating memory...")
+    println("Preallocating memory..."); flush(stdout)
   end
 
   # Create object to return
@@ -102,17 +101,15 @@ function gibbs(init::T,
                for i in 1:numMonitors]
 
   function printMsg(i::Int)
-    if (printFreq > 0) && (i % printFreq == 0) && (i > 1)
+    if i == 1 || ((printFreq > 0) && (i % printFreq == 0) && (i > 1))
       loglikeMsg = ismissing(loglike) ? "" : "-- loglike: $(last(loglike))"
-      print("$(showtime()) -- $(i)/$(nburn+nmcmc) $loglikeMsg")
+      print("$(showtime()) -- $(i)/$(nburn+nmcmc) $loglikeMsg"); flush(stdout)
 
       if printlnAfterMsg
-        println()
+        println(); flush(stdout)
       end
 
-      if flushOutput
-        flush(stdout)
-      end
+      flush(stdout)
     end
   end
 

@@ -1,26 +1,35 @@
 function compute_loglike(i::Int, n::Int, j::Int,
                          s::State, c::Constants, d::Data)::Float64
+  # NOTE: This returns p(m, y_observed | theta).
+
   ll = 0.0
   y_inj_is_missing = (d.m[i][n, j] == 1)
 
+  # NOTE: See this reference for DIC (or loglike) with
+  # missing data: http://www.bias-project.org.uk/papers/DIC.pdf
   if y_inj_is_missing
     # NOTE: Don't compute p(m_inj | y_inj, theta) if y_inj is observed,
-    # because missing mechanism is fixed, and will results in a constant.
+    # because missing mechanism is fixed, and results in a constant.
     
     # Compute p(m_inj | y_inj, theta) term.
     p = prob_miss(s.y_imputed[i][n, j], c.beta[:, i])
     ll += log(p)
-  end
+  else
+    # NOTE: Don't compute p(y_inj | theta) if y_inj is missing,
+    # because the expression contains no data
+    # (i.e. m, y_obs are not present, and therefore don't contribute
+    # to the likelihood).
 
-  # Compute p(y_inj | theta) term.
-  k = s.lam[i][n]
-  y_inj = s.y_imputed[i][n, j]
-  if k > 0  # cell is not noisy 
-    z = s.Z[j, k]
-    l = s.gam[i][n, j]
-    ll += logpdf(Normal(mus(z, l, s, c, d), sqrt(s.sig2[i])), y_inj)
-  else  # cell is noisy and observed
-    ll += logpdf(c.noisyDist, y_inj)
+    # Compute p(y_inj | theta) term.
+    k = s.lam[i][n]
+    y_inj = s.y_imputed[i][n, j]
+    if k > 0  # cell is not noisy 
+      z = s.Z[j, k]
+      l = s.gam[i][n, j]
+      ll += logpdf(Normal(mus(z, l, s, c, d), sqrt(s.sig2[i])), y_inj)
+    else  # cell is noisy and observed
+      ll += logpdf(c.noisyDist, y_inj)
+    end
   end
 
   if isinf(ll) || isnan(ll)

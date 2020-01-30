@@ -21,6 +21,11 @@ path_to_cb_data = $(data_dir)/cb_transformed.csv
 
 path_to_reduced_cb_data = $(data_dir)/cb_transformed_reduced.csv
 
+# Number of cores to use for CB analysis
+NPROC_CB = 11
+
+### Make commands ###
+
 # Download transformed CB data.
 # For data info, see: https://github.com/luiarthur/cytof-data
 getcbdata: $(path_to_cb_data)
@@ -39,7 +44,7 @@ metrics:
 
 # Run CB analysis for various K
 run-cb-fam: getcbdata preproc
-	@echo TODO
+	julia run_cb_fam.jl $(NPROC_CB) &> results/run_cb_fam.log &
 
 # Run CB analysis for two more missing mechanisms, for the best K.
 run-cb-fam-missmech: getcbdata preproc

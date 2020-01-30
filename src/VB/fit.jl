@@ -2,8 +2,7 @@ function fit(; y::Vector{M}, niters::Int, batchsize::Int, c::Constants,
              opt=ADAM(1e-2), print_freq::Int=10, nsave::Int=0,
              scale_logqy::Float64=1.0,
              init::Union{StateMP, Nothing}=nothing,
-             seed=nothing, flushOutput::Bool=false,
-             verbose::Int=1) where M <: Matrix
+             seed=nothing, verbose::Int=1) where M <: Matrix
 
   if verbose >= 1
     println("opt: $opt")
@@ -86,9 +85,7 @@ function fit(; y::Vector{M}, niters::Int, batchsize::Int, c::Constants,
       append!(state_hist, [deepcopy(state)])
     end
 
-    if flushOutput
-      flush(stdout)
-    end
+    flush(stdout)
   end
 
   # Put things in output
