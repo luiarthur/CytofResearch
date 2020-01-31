@@ -51,9 +51,9 @@ mm_betas_df = vcat([DataFrames.DataFrame(
   end) for mm in 0:2]...)
 
 # Reorder columns for aesthetics
-mm_betas_df = mm_betas_df[vcat([:missmech, :beta],
-                               [Symbol("sample_$(i)") for i in 1:num_samples])]
+mm_betas_df = mm_betas_df[:, vcat([:missmech, :beta],
+                                  [Symbol("sample_$(i)")
+                                   for i in 1:num_samples])]
 
 # Write data frame.
 CSV.write("results/mm_betas.csv", mm_betas_df)
-
