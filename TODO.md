@@ -33,9 +33,9 @@ Add a [build step][1] to install R / python dependencies.
     - Simulation 1: Z hat, y sorted
 - [ ] Figure 4
     - Simulation 1: FlowSOM y sorted.
-- [ ] Figure 5
+- [X] Figure 5
     - CB FAM: LPML, DIC, Calibration metric
-- [ ] Figure 6
+- [X] Figure 6
     - CB FAM: Z hat, y sorted
 - [ ] Figure 7
     - CB FAM: FlowSOM. y sorted, each cluster sizes.
