@@ -1,3 +1,5 @@
+# NOTE: Example code for fitting a Gaussian mixture model using ADVI,
+# implemented in Flux.
 using Flux, Flux.Tracker
 using Distributions
 
