@@ -36,25 +36,30 @@ $(path_to_cb_data):
 
 # Post process results
 postproc:
-	@echo TODO
+	julia postprocess_cb_fam.jl
 
 # Make metrics for run-cb (varying K)
+# Make metrics for missmech vs LPML, DIC
 metrics:
-	@echo TODO
+	julia metrics.jl
 
-# Run CB analysis for various K
+# Run CB analysis for various K on mm0
+# Run CB analysis for best K (21) on mm1 and mm2
 run-cb-fam: getcbdata preproc
-	julia run_cb_fam.jl $(NPROC_CB) &> results/run_cb_fam.log &
+	julia run_cb_fam.jl $(NPROC_CB) `seq -s ',' 3 3 33` 0 \
+		&> results/run_cb_fam_mm0.log &
+	julia run_cb_fam.jl 1 21 1 &> results/run_cb_fam_mm1.log &
+	julia run_cb_fam.jl 1 21 2 &> results/run_cb_fam_mm2.log &
 
 # Kill all CB run jobs
 kill-cb-runs:
-	kill `cat results/run_cb_fam.log | grep -oP '(?<=Worker pids:).*'`
-	kill `cat results/run_cb_fam.log | grep -oP '(?<=Master node pid:).*'`
+	kill `cat results/run_cb_fam_mm0.log | grep -oP '(?<=Worker pids:).*'`
+	kill `cat results/run_cb_fam_mm0.log | grep -oP '(?<=Master node pid:).*'`
+	kill `cat results/run_cb_fam_mm1.log | grep -oP '(?<=Worker pids:).*'`
+	kill `cat results/run_cb_fam_mm1.log | grep -oP '(?<=Master node pid:).*'`
+	kill `cat results/run_cb_fam_mm2.log | grep -oP '(?<=Worker pids:).*'`
+	kill `cat results/run_cb_fam_mm2.log | grep -oP '(?<=Master node pid:).*'`
 
-
-# Run CB analysis for two more missing mechanisms, for the best K.
-run-cb-fam-missmech: getcbdata preproc
-	@echo TODO
 
 # Preprocess transformed CB data
 preproc: $(path_to_reduced_cb_data)

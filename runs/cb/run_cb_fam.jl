@@ -16,11 +16,15 @@ using Distributed
 if length(ARGS) == 0
   println("Running in debug mode! This does not reproduce results in paper!")
   flush(stdout)
-  num_proc = 11
+  num_proc = 3
   NMCMC = 20
   NBURN = 10
+  Kmcmcs = [3, 4, 5]
+  mm = 0
 else
   num_proc = parse(Int, ARGS[1])
+  Kmcmcs = parse.(Int, split(ARGS[2], ','))  # collect(3:3:33)
+  mm = parse(Int, ARGS[3])  # 0, 1, or 2. missing mechanism.
   NMCMC = 6000
   NBURN = 10000
 end
@@ -57,9 +61,18 @@ dat = let
   CytofResearch.Model.Data(y)
 end
 
-@everywhere function fit(Kmcmc::Int, nmcmc::Int, nburn::Int, dat)
+@everywhere function fit(Kmcmc::Int, nmcmc::Int, nburn::Int, dat, mm::Int)
   # Directory to store output.
-  output_dir = "results/cb-runs/Kmcmc_$(Kmcmc)"
+  output_dir = "results/cb-runs/mm_$(mm)/Kmcmc_$(Kmcmc)"
+
+  # y quantiles for missing mechanism
+  if mm == 0
+    yQuantiles =  [0., 0.25, 0.5]
+  elseif mm == 1
+    yQuantiles =  [0., 0.2, 0.4]
+  else
+    yQuantiles =  [0., 0.15, 0.3]
+  end
 
   # Create output directory if needed.
   mkpath(output_dir)
@@ -84,7 +97,7 @@ end
       tau0=10.0, tau1=10.0,
       sig2_prior=InverseGamma(3.0, 2.0),
       alpha_prior=Gamma(0.1, 10.0),
-      yQuantiles=[0.00, 0.25, 0.50],
+      yQuantiles=yQuantiles,
       pBounds=[.05, .80, .05],
       similarity_Z=CytofResearch.Model.sim_fn_abs(10000),
       probFlip_Z=2.0 / (dat.J * Kmcmc),
@@ -98,8 +111,6 @@ end
     @time init = CytofResearch.Model.smartInit(c, dat)
 
     # TODO: print probMissing curves
-
-    # TODO: print initial Z
 
     # NOTE: This is the core of this script. It fits the FAM.
     # Everything else is setup / for parallelization.
@@ -117,15 +128,17 @@ end
 
     # Write to disk
     BSON.bson("$(output_dir)/output.bson", results)
+
+    println("DONE!")
   end # end of redirect
 end
 
 # Run the thing in parallel
-Kmcmcs = collect(3:3:33)
 numjobs = length(Kmcmcs)
 status = pmap(fit,
               Kmcmcs, fill(NMCMC, numjobs),
               fill(NBURN, numjobs), fill(dat, numjobs),
+              fill(mm, numjobs),
               on_error=identity)
 status_sanitized = map(s -> s == nothing ? "success" : s, status)
 
@@ -133,3 +146,5 @@ status_sanitized = map(s -> s == nothing ? "success" : s, status)
 for (K, s) in zip(Kmcmcs, status_sanitized)
   println("Kmcmc: $(K) => status: $(s)")
 end
+
+println("ALL DONE!")

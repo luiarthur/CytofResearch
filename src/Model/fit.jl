@@ -248,6 +248,8 @@ function cytof_fit(init::State, c::Constants, d::Data;
   results[:out] = out  # monitors
   results[:lastState] = lastState
   results[:loglike] = loglike
+  results[:c] = c
+  results[:init] = init
 
   if computeDIC || computeLPML
     LPML = computeLPML ? MCMC.computeLPML(cpoStream) : NaN

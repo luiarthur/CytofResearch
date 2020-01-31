@@ -5,7 +5,7 @@ Pkg.activate(path_to_env)
 
 using CytofResearch
 using BSON
-using StatsBase
+using Distributions
 using LaTeXStrings
 using DataFrames
 using CSV

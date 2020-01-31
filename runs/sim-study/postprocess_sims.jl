@@ -5,8 +5,7 @@ using Distributed
 rmprocs(filter(w -> w > 1, workers()))
 addprocs(10)
 
-# results_dir = ARGS[1]  # "results/sim-runs-small" or "results/sim-runs-large"
-results_dir = "results"
+results_dir = ARGS[1]  # "results/"
 
 @everywhere include("../PlotUtils/PlotUtils.jl")
 @everywhere include("../PlotUtils/imports.jl")
@@ -48,18 +47,24 @@ PlotUtils.plot_yz.plot_Z_only(Z_true_small,
                               fs=PlotUtils.rcParams["font.size"],
                               xlab="cell subpopulations", ylab="markers")
 plt.savefig(joinpath(results_dir, "sim-runs-small/Z_true.pdf"))
+plt.close()
 
 # Plot simulation truth Z (large data)
 PlotUtils.plot_yz.plot_Z_only(Z_true_large,
                               fs=PlotUtils.rcParams["font.size"],
                               xlab="cell subpopulations", ylab="markers")
 plt.savefig(joinpath(results_dir, "sim-runs-large/Z_true.pdf"))
+plt.close()
 
-# TODO: Print simulation truth W (small data)
-# use writedlm
+# Print simulation truth W (small data)
+open(joinpath(results_dir, "sim-runs-small/W_true.txt"), "w") do io
+  writedlm(io, W_true_small, ',')
+end
 
-# TODO: Print simulation truth W (large data)
-
+# Print simulation truth W (large data)
+open(joinpath(results_dir, "sim-runs-large/W_true.txt"), "w") do io
+  writedlm(io, W_true_large, ',')
+end
 
 ### MAIN ###
 
@@ -74,10 +79,5 @@ output_paths = [joinpath(root, OUTPUT_FILE)
 # Reproduce CB y, Z plots.
 status = pmap(makeplots, output_paths)
 println(status)
-
-# TODO
-# Reproduce sims metrics
-# println("Producing metrics ...")
-# metrics = PlotUtils.make_metrics(results_dir, OUTPUT_FILE, thresh=.01)
 
 println("DONE!")

@@ -1,11 +1,9 @@
-# TODO
-
 include("../PlotUtils/PlotUtils.jl")
 include("../PlotUtils/imports.jl")
 
 using Distributed
 rmprocs(filter(w -> w > 1, workers()))
-addprocs(10)
+addprocs(13)
 
 @everywhere include("../PlotUtils/PlotUtils.jl")
 @everywhere include("../PlotUtils/imports.jl")
@@ -47,10 +45,6 @@ results_dir = "results/cb-runs"
 # Name of output file
 OUTPUT_FILE = "output.bson"
 
-# Reproduce CB metrics
-println("Producing metrics ...")
-metrics = PlotUtils.make_metrics(results_dir, OUTPUT_FILE, thresh=.01)
-
 # PATH TO ALL OUTPUT FILES
 output_paths = [joinpath(root, OUTPUT_FILE)
                 for (root, _, files) in walkdir(results_dir)
@@ -59,5 +53,9 @@ output_paths = [joinpath(root, OUTPUT_FILE)
 # Reproduce CB y, Z plots.
 status = pmap(makeplots, output_paths)
 println(status)
+
+# TODO: beta for CB
+
+
 
 println("DONE!")

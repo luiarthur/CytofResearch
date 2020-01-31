@@ -16,6 +16,7 @@ $(PATH_TO_SIMDATA_SMALL) $(PATH_TO_SIMDATA_LARGE): createSimData.jl
 	julia createSimData.jl
 
 run-sims-default-missmech:
+	# numproc, kmcmcs_small, kmcmcs_large, yquantiles, suffix
 	julia run_sim_study.jl \
 		19 \
 		"2,3,4,5,6,7,8,9" \
@@ -24,6 +25,7 @@ run-sims-default-missmech:
 		"mm0" &> results/run-sim-study.log &
 
 missmechsen:
+	# numproc, kmcmcs_small, kmcmcs_large, yquantiles, suffix
 	@echo "Do simulations with missing mechanism I:"
 	julia run_sim_study.jl \
 		2 \
@@ -47,3 +49,7 @@ kill-sim-runs:
 	kill `cat results/run-sim-study*.log | grep -oP '(?<=Worker pids:).*'`
 	kill `cat results/run-sim-study*.log | grep -oP '(?<=Master node pid:).*'`
 
+postproc: 
+	@echo Generating y/Z plots for all runs
+	julia postprocess_sims.jl results/
+	julia metrics.jl
