@@ -49,7 +49,7 @@ Add a [build step][1] to install R / python dependencies.
     - CB missmech 0 ADVI. y, Z
 - [ ] Figure 10:
     - Sim 2 FlowSOM
-- [ ] Figure 11:
+- [X] Figure 11:
     - TSNE CB
 - [X] Table 6:
     - beta for CB data
