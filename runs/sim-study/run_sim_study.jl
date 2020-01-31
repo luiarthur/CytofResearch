@@ -23,12 +23,15 @@ if length(ARGS) == 0
   NMCMC = 20
   NBURN = 10
   MONITORS=[[:Z, :lam, :W, :sig2, :delta, :alpha, :v, :eta, :eps]]
-  THINS=[1]
+  THINS=[2]
   YQUANTILES = [0.0, 0.25, 0.50]
-  Kmcmcs_small = [2, 4, 6]
+  Kmcmcs_small = [3, 5, 7]
   Kmcmcs_large = [5, 10, 15]
   EXP_NAME_SUFFIX = "mm0"
 else
+  # Converts number of samples to thinning factor.
+  nsamps_to_thin(nsamps::Int, nmcmc::Int) = max(1, div(nmcmc, nsamps))
+
   num_proc = parse(Int, ARGS[1])
   Kmcmcs_small = parse.(Int, split(ARGS[2], ","))
   Kmcmcs_large = parse.(Int, split(ARGS[3], ","))
@@ -39,7 +42,7 @@ else
   NBURN = 10000
   MONITORS=[[:Z, :lam, :W, :sig2, :delta, :alpha, :v, :eta, :eps],
             [:y_imputed, :gam]]
-  THINS=[2, nsamps_to_thin(10, nmcmc)]
+  THINS=[2, nsamps_to_thin(10, NMCMC)]
 end
 
 # Remove old workers
@@ -61,31 +64,33 @@ println("Finished loading libraries on workers node ..."); flush(stdout)
 
 # Create model data object 
 small_simdat = let
-  y = Matrix(BSON.load("../data/simdat-nfac500.bson")[:y])
+  y = Matrix.(BSON.load("../data/simdat-nfac500.bson")[:y])
   CytofResearch.Model.Data(y)
 end
 
 large_simdat = let
-  y = Matrix(BSON.load("../data/simdat-nfac5000.bson")[:y])
+  y = Matrix.(BSON.load("../data/simdat-nfac5000.bson")[:y])
   CytofResearch.Model.Data(y)
 end
 
+@everywhere small_simdat = $(small_simdat)
+@everywhere large_simdat = $(large_simdat)
 
 # Kmcmc, nmcmc, nburn, simdatsize, dat, monitors, thins
 @everywhere function fit(setting)
-  for (key, val) in settings
-    println("$(key) => $(val)")
+  for (key, val) in setting
+    println("$(key) => $(val)"); flush(stdout)
   end
 
   Kmcmc = setting[:Kmcmc]
   nmcmc = setting[:nmcmc]
   nburn = setting[:nburn]
   simdatsize = setting[:simdatsize]
-  dat = setting[:dat]
+  dat = (simdatsize == "small") ? small_simdat : large_simdat
   monitors = setting[:monitors]
   thins = setting[:thins]
   yQuantiles = setting[:yQuantiles]
-  exp_name_suffix = setting[:suffix]
+  suffix = setting[:suffix]
 
   # Directory to store output.
   output_dir = "results/sim-runs-$(simdatsize)/$(suffix)/Kmcmc_$(Kmcmc)"
@@ -97,15 +102,16 @@ end
   CytofResearch.Model.redirect_stdout_to_file("$(output_dir)/log.txt") do
     println("Output directory: $(output_dir)"); flush(stdout)
     println("Worker node pid: $(getpid())"); flush(stdout)
-
-    # Converts number of samples to thinning factor.
-    nsamps_to_thin(nsamps::Int, nmcmc::Int) = max(1, div(nmcmc, nsamps))
     
     # Specification of L (as in model)
     Lmcmc = Dict(0 => 5, 1 => 5)
 
     # Set random seed for reproducibility.
-    Random.seed!(0)
+    if simdatsize == "small"
+      Random.seed!(90)
+    else
+      Random.seed!(1)
+    end
 
     # Make model constants
     @time c = CytofResearch.Model.defaultConstants(
@@ -146,6 +152,8 @@ end
     # Write to disk
     BSON.bson("$(output_dir)/output.bson", results)
   end # end of redirect
+
+  return
 end
 
 # Run the thing in parallel
@@ -154,14 +162,15 @@ end
 settings = vcat(
   [Dict(:Kmcmc => K, :nmcmc => NMCMC, :nburn => NBURN, :simdatsize => "small",
         :monitors => MONITORS, :thins => THINS, :yQuantiles => YQUANTILES,
-        :dat => small_simdat, :suffix => EXP_NAME_SUFFIX)
+        :suffix => EXP_NAME_SUFFIX)
    for K in Kmcmcs_small],
   [Dict(:Kmcmc => K, :nmcmc => NMCMC, :nburn => NBURN, :simdatsize => "large",
         :monitors => MONITORS, :thins => THINS, :yQuantiles => YQUANTILES,
-        :dat => large_simdat, :suffix => EXP_NAME_SUFFIX)
+        :suffix => EXP_NAME_SUFFIX)
    for K in Kmcmcs_large])
 
-status = pmap(fit, settings, on_error=identity)
+# status = pmap(fit, settings, on_error=identity)
+status = pmap(fit, settings)
 status_sanitized = map(s -> s == nothing ? "success" : s, status)
 
 # Printing success / failure status of runs.

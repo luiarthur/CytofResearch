@@ -101,7 +101,7 @@ function gibbs(init::T,
                for i in 1:numMonitors]
 
   function printMsg(i::Int)
-    if i == 1 || ((printFreq > 0) && (i % printFreq == 0) && (i > 1))
+    if (printFreq > 0) && (i % printFreq == 0) && (i > 1)
       loglikeMsg = ismissing(loglike) ? "" : "-- loglike: $(last(loglike))"
       print("$(showtime()) -- $(i)/$(nburn+nmcmc) $loglikeMsg"); flush(stdout)
 

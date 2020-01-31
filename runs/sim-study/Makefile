@@ -42,3 +42,8 @@ missmechsen:
 runsims:
 	make run-sims-default-missmech --no-print-directory &
 	make missmechsen --no-print-directory &
+
+kill-sim-runs:
+	kill `cat results/run-sim-study*.log | grep -oP '(?<=Worker pids:).*'`
+	kill `cat results/run-sim-study*.log | grep -oP '(?<=Master node pid:).*'`
+
