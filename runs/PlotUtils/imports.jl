@@ -9,6 +9,7 @@ using StatsBase
 using LaTeXStrings
 using DataFrames
 using CSV
+using DelimitedFiles
 include(joinpath(@__DIR__, "salso.jl"))
 
 import PyCall, PyPlot
