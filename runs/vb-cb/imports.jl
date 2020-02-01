@@ -6,5 +6,5 @@ using CSV
 using CytofResearch
 import DataFrames; const DF = DataFrames
 using Distributions
-using Flux
+using Flux, Flux.Tracker
 import Random
