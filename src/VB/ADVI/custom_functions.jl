@@ -83,16 +83,16 @@ function lpdf_dirichlet(p::AbstractArray, a::AbstractArray)
     a = reshape(a, (one.(size(p)[1:end-1])..., length(a)))
   end
   K = ndims(p)
-  return (Tracker.lgamma.(sumdd(a, dims=K)) .- 
-          sumdd(Tracker.lgamma.(a), dims=K) .+ 
+  return (Tracker.loggamma.(sumdd(a, dims=K)) .- 
+          sumdd(Tracker.loggamma.(a), dims=K) .+ 
           sumdd((a .- 1) .* log.(p), dims=K))
 end
 
 function lpdf_beta(p::P, a::A, b::B) where {P <: Real, A <: Real, B <: Real}
   if 0 < p < 1
-    return (Tracker.lgamma(a + b) - 
-            Tracker.lgamma(a) - 
-            Tracker.lgamma(b) + 
+    return (Tracker.loggamma(a + b) - 
+            Tracker.loggamma(a) - 
+            Tracker.loggamma(b) + 
             (a-1)*log(p) + 
             (b-1)*log1p(-p))
   else
@@ -106,7 +106,7 @@ function lpdf_gamma(x::X, shape::A, scale::B) where {X <: Real,
   if x <= 0
     return -Inf
   else
-    return (-Tracker.lgamma(shape) - shape*log(scale) +
+    return (-Tracker.loggamma(shape) - shape*log(scale) +
             (shape - 1) * log(x) - x / scale)
   end
 end
