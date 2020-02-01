@@ -9,6 +9,8 @@ function fit(; y::Vector{M}, niters::Int, batchsize::Int, c::Constants,
     println("niters: $niters")
     println("batchsize: $batchsize")
     printConstants(c)
+
+    flush(stdout)
   end
 
   # Set a random seed for reproducibility if seed is provided
@@ -45,6 +47,7 @@ function fit(; y::Vector{M}, niters::Int, batchsize::Int, c::Constants,
       m = ["$(key): $(round(metrics[key][end] / sum(c.N), digits=3))"
            for key in keys(metrics)]
       println("$(ShowTime()) | $(iter)/$(niters) | $(join(m, " | "))")
+      flush(stdout)
     end
   end
 
