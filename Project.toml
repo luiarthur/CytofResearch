@@ -1,7 +1,7 @@
 name = "CytofResearch"
 uuid = "b02177ca-416e-11ea-1c5f-9999da4b2093"
 authors = ["Arthur Lui <luiarthur@gmail.com>"]
-version = "0.1.0"
+version = "0.2.0"
 
 [deps]
 BSON = "fbb218c0-5317-5bc6-957e-2ee96dd4b1f0"
