@@ -1,5 +1,11 @@
 SHELL = /bin/bash
 
-.PHONY: all run postproc metrics
+.PHONY: all run postproc
 
-# Kmcmc = 30
+all: run postproc
+
+run:
+	julia run.jl 20
+
+postproc:
+	julia post_process.jl

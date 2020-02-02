@@ -1,42 +1,25 @@
-# TODO: MAke this a module, and test this.
-# THIS IS NEXT!
-include("../PlotUtils/PlotUtils.jl")
-include("../PlotUtils/imports.jl")
-include("sample/sample_lam.jl")
+include("plot_vb_results.jl")
 
-# Function arguments
-nsamps = 100
-output = BSON.load("results/seed_2/output.bson")
-imgdir = "results/seed_2/img"
-mkpath(imgdir)
-w_thresh = .01
-# y
-# markernames = 
+# Read CB data
+y, markernames = let
+  function separatesamples(Y)
+    sample_ids = sort(unique(Y.sample_id))
+    return Matrix.(Y[Y.sample_id .== i, Not(:sample_id)]
+                   for i in sample_ids)
+  end
 
-state = output[:state]
-c = output[:c]
-samples = [CytofResearch.VB.rsample(state)[2] for _ in 1:nsamps]
+  path_to_data = "../data/cb_transformed_reduced.csv"
+  Y = coalesce.(CSV.read(path_to_data), NaN)
+  (separatesamples(Y), names(Y))
+end
 
-# Compute Z and E[Z]
-compute_Z(s) = Int.(reshape(s.v, 1, c.K) .> s.H).data
-Zs = compute_Z.(samples)
-Zmean = mean(Zs)
+paths = [joinpath(root, file)
+         for (root, dirs, files) in walkdir("results")
+         for file in files
+         if file == "output.bson"]
 
-# Compute W
-Ws = [s.W for s in samples]
-Wmean = mean(Ws).data
-
-# Compute lam
-nlam = 30
-lams = [begin
-          print("\rsampling lambda: $(b)/$(nlam)")
-          sample_lam(state, y, c)
-        end for b in 1:nlam]
-println()
-lam_est = [mode(lam[i] for lam in lams) for i in 1:length(lams[1])]
-
-i = 1
-# TODO: markernames=???
-PlotUtils.plot_yz.plot_Z(Zmean, Wmean[i, :], lam_est[i], w_thresh=w_thresh)
-plt.savefig("$(imgdir)/Z$(i).pdf", bbox_inches="tight")
-plt.close()
+for path in paths
+  println("Processing: $(path)")
+  makeplots(y=y, path_to_output=path,
+            markernames=markernames, nlam=30)
+end
