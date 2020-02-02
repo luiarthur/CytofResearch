@@ -1,6 +1,7 @@
 SHELL = /bin/bash
 
-.PHONY: all reproduce clean-data recreate-all-data run-cb
+.PHONY: all reproduce clean-data recreate-all-data
+.PHONY: run-cb run-flowsom run-simstudy run-vb-cb run-vb-simstudy
 
 ### Make commands ###
 all: reproduce
