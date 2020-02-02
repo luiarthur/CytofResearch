@@ -1,5 +1,6 @@
 SHELL = /bin/bash
 
-.PHONY: all cb sim-large postproc
+.PHONY: all 
 
-
+all:
+	julia flowsom_cb.jl

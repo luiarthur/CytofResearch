@@ -25,9 +25,9 @@ Add a [build step][1] to install R / python dependencies.
     - Calibration metric
 
 ## Main Tables / Figures
-- [ ] Figure 4
+- [X] Figure 4
     - Simulation 1: FlowSOM y sorted.
-- [ ] Figure 7
+- [X] Figure 7
     - CB FAM: FlowSOM. y sorted, each cluster sizes.
 - [X] Table 1
     - Simulation 1: True Z & W
@@ -41,7 +41,7 @@ Add a [build step][1] to install R / python dependencies.
     - CB FAM: Z hat, y sorted
 
 ## Supplementary Tables / Figures
-- [ ] Figure 10:
+- [X] Figure 10:
     - Sim 2 FlowSOM
 - [x] Figure 2:
     - ADVI Sim 1: Z, y sorted
