@@ -41,14 +41,14 @@ Add a [build step][1] to install R / python dependencies.
     - CB FAM: Z hat, y sorted
 
 ## Supplementary Tables / Figures
-- [ ] Figure 2:
-    - ADVI Sim 1: Z, y sorted
-- [ ] Figure 7:
-    - Sim 2 ADVI: Z, y sorted
-- [ ] Figure 14:
-    - CB missmech 0 ADVI. y, Z
 - [ ] Figure 10:
     - Sim 2 FlowSOM
+- [x] Figure 2:
+    - ADVI Sim 1: Z, y sorted
+- [x] Figure 7:
+    - Sim 2 ADVI: Z, y sorted
+- [X] Figure 14:
+    - CB missmech 0 ADVI. y, Z
 - [X] Figure 11:
     - TSNE CB
 - [X] Table 6:
