@@ -31,10 +31,15 @@ echo "This node has `nproc` processors."
 # Make output directory.
 mkdir -p results
 
-# Run script.
+# Number of processors
 NUM_PROCS=40
-# julia run.jl $NUM_PROCS &> $(RESULTS_DIR)/log.txt &
-julia run.jl &> $RESULTS_DIR/log.txt &
+
+# Run test script.
+# julia run.jl &> $RESULTS_DIR/log.txt &
+
+# Run script.
+julia run.jl $NUM_PROCS &> $(RESULTS_DIR)/log.txt &
+
 
 echo "Job submission time:"
 date

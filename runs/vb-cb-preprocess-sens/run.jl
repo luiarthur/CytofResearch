@@ -19,7 +19,7 @@ if length(ARGS) == 0
   num_proc = 4
   ps = [0.85, 0.99]
   SEEDS = [2, 4]
-  NITERS = 20000
+  NITERS = 2000
   BATCHSIZE = 200
 else
   num_proc = parse(Int, ARGS[1])  # 40
