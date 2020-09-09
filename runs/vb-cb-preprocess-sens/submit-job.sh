@@ -2,15 +2,15 @@
 
 # Run this script with: sbatch submit-job.sh
 
-#SBATCH -p 128x24   # Partition name
-#SBATCH -J vb-cb-sens  # Job name
+#SBATCH -p 128x24       # Partition name
+#SBATCH -J vb-cb-sens   # Job name
 #SBATCH --mail-user=alui2@ucsc.edu
 #SBATCH --mail-type=ALL
-#SBATCH -o out/slurm-job.out    # Name of stdout output file
-#SBATCH -N 2         # Total number of nodes requested (128x24/Instructional only)
-#SBATCH -n 21        # Total number of mpi tasks requested per node
-#SBATCH -t 48:00:00  # Run Time (hh:mm:ss) - 48 hours (optional)
-#SBATCH --mem=42G # Memory to be allocated PER NODE
+#SBATCH -o out/slurm-job.out # Name of stdout output file
+#SBATCH -N 2                 # Total number of nodes requested (128x24/Instructional only)
+#SBATCH -n 24                # Total number of mpi tasks requested per node
+#SBATCH -t 48:00:00          # Run Time (hh:mm:ss) - 48 hours (optional)
+#SBATCH --mem=48G            # Memory to be allocated PER NODE
 
 echo "SCRATCH_DIR: $SCRATCH_DIR"
 
@@ -32,6 +32,8 @@ echo "This is a healthy sign of life ..."
 mkdir -p results
 
 # Run script.
+NUM_PROCS=40
+# julia run.jl $NUM_PROCS &> $(RESULTS_DIR)/log.txt &
 julia run.jl &> $(RESULTS_DIR)/log.txt &
 
 echo "Job submission time:"
