@@ -1,4 +1,5 @@
-import Pkg; Pkg.activate("../../")
+import Pkg; 
+Pkg.activate(joinpath(@__DIR__, "../../"))  # environment: CytofResearch
 
 # Load libraries
 println("Loading libraries ...")
