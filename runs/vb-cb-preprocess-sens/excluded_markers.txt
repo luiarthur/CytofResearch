@@ -1,0 +1,4 @@
+Excluded markers for p=0.85: ["2DL1", "2DL3", "2DS4", "3DL1", "CCR7", "CD25", "CD57", "CKIT", "GRA", "GRB", "LFA1", "NKG2C", "PERFORIN", "SYK", "TRAIL"]
+Excluded markers for p=0.9: ["2DL1", "2DS4", "CCR7", "CD25", "CD57", "CKIT", "GRA", "GRB", "LFA1", "PERFORIN", "SYK", "TRAIL"]
+Excluded markers for p=0.95: ["2DS4", "CD25", "CD57", "CKIT", "GRA", "GRB", "LFA1", "PERFORIN", "SYK", "TRAIL"]
+Excluded markers for p=0.99: ["CD25", "CKIT", "GRA", "GRB", "PERFORIN", "SYK"]

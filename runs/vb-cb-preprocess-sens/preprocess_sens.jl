@@ -54,9 +54,16 @@ end
 # Read data
 Y = coalesce.(CSV.read(path_to_data), NaN)
 
+# Excluded markers path.
+path_to_excluded_markers = "excluded_markers.txt"
+rm(path_to_excluded_markers, force=true)
+
 for p in (0.85, 0.9, 0.95, 0.99)
   Y_reduced, excludedmarkers = final_preprocess(Y, p=p)
-  println("Excluded markers for p=$(p): $(excludedmarkers)")
+
+  open(path_to_excluded_markers, "a") do io
+    println(io, "Excluded markers for p=$(p): $(String.(excludedmarkers))")
+  end
 
   # Path to reduced data
   path_to_reduced_data = "$(data_dir)/cb_transformed_reduced_p$(p).csv"
