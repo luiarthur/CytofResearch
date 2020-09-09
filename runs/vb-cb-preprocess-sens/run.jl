@@ -16,7 +16,7 @@ if length(ARGS) == 0
   println("Running in debug mode! This does not reproduce results in paper!")
   flush(stdout)
 
-  num_proc = 2
+  num_proc = 4
   ps = [0.8, 0.99]
   SEEDS = [2, 4]
   NITERS = 20000
