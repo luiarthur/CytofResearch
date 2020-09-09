@@ -17,7 +17,7 @@ if length(ARGS) == 0
   flush(stdout)
 
   num_proc = 4
-  ps = [0.8, 0.99]
+  ps = [0.85, 0.99]
   SEEDS = [2, 4]
   NITERS = 20000
   BATCHSIZE = 200
@@ -66,7 +66,7 @@ println("Finished loading libraries on workers node ..."); flush(stdout)
   end
 
   # Results directory
-  results_dir = "results/p_$(p)/seed_$(seed)"
+  results_dir = "results/p$(p)_seed$(seed)"
   mkpath(results_dir)
 
   # Redirect output
@@ -95,6 +95,7 @@ end
 
 # Run the thing in parallel
 settings_vec = [(seed=seed, p=p) for seed in SEEDS for p in ps]
+println("Number of settings: $(length(settings_vec))")
 status = pmap(fit, settings_vec, on_error=identity)
 status_sanitized = map(s -> s == nothing ? "success" : s, status)
 
