@@ -22,7 +22,7 @@ end
   # Read CB data
   y, markernames = let
     p, seed = get_attr(path)
-    data_path = "../data/cb_transformed_reduced_p$(p)_seed$(seed).csv"
+    data_path = "../data/cb_transformed_reduced_p$(p).csv"
     Y = coalesce.(CSV.read(data_path), NaN)
     (separatesamples(Y), names(Y))
   end
