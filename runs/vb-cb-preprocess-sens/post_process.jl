@@ -1,5 +1,7 @@
+include(joinpath(@__DIR__, "../vb-cb/plot_vb_results.jl"))  # To precompile 
+
 using Distributed
-addprocs(20)
+addprocs(10)
 
 @everywhere include(joinpath(@__DIR__, "../vb-cb/plot_vb_results.jl"))
 
