@@ -38,15 +38,18 @@ function makeplots(; y, path_to_output, nsamps=100, w_thresh=.01, lw=3,
           end for b in 1:nlam]
   println()
 
+  println("get lam_est")
   lam_est = [mode(lam[i] for lam in lams) for i in 1:num_cb_samples]
 
   for i in 1:num_cb_samples
     # Plot Z
+    println("plot Z$(i)")
     PlotUtils.plot_yz.plot_Z(Zmean, Wmean[i, :], lam_est[i], w_thresh=w_thresh)
     plt.savefig("$(imgdir)/Z$(i).pdf", bbox_inches="tight")
     plt.close()
 
     # plot Yi, lami
+    println("plot y$(i)")
     plt.figure(figsize=(6, 6))
     PlotUtils.plot_yz.plot_y(y[i], Wmean[i, :], lam_est[i], vlim=vlim,
                              cm=PlotUtils.blue2red.cm(9), lw=lw,
