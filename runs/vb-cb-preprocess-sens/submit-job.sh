@@ -7,7 +7,7 @@
 #SBATCH --mail-user=alui2@ucsc.edu
 #SBATCH --mail-type=ALL
 #SBATCH -o out/slurm-job.out # Name of stdout output file
-#SBATCH -N 1                 # Total number of nodes requested (128x24/Instructional only)
+#SBATCH -N 2                 # Total number of nodes requested (128x24/Instructional only)
 #SBATCH -t 48:00:00          # Run Time (hh:mm:ss) - 48 hours (optional)
 #SBATCH --mem=48G            # Memory to be allocated PER NODE
 
