@@ -20,3 +20,6 @@ sendoutput:
 
 getoutput:
 	aws s3 sync $(AWS_BUCKET) $(RESULTS_DIR) --exclude '*.nfs'
+
+postproc:
+	julia post_process.jl
