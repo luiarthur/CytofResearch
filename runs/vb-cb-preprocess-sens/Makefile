@@ -29,3 +29,4 @@ getoutput:
 postproc:
 	rm -f results/best_seeds.txt
 	julia post_process.jl > results/best_seeds.txt
+	. bundle.sh
