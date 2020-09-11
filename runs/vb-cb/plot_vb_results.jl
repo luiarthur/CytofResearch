@@ -44,7 +44,8 @@ function makeplots(; y, path_to_output, nsamps=100, w_thresh=.01, lw=3,
   for i in 1:num_cb_samples
     # Plot Z
     println("plot Z$(i)")
-    PlotUtils.plot_yz.plot_Z(Zmean, Wmean[i, :], lam_est[i], w_thresh=w_thresh)
+    PlotUtils.plot_yz.plot_Z(Zmean, Wmean[i, :], lam_est[i], w_thresh=w_thresh,
+                             markernames=markernames)
     plt.savefig("$(imgdir)/Z$(i).pdf", bbox_inches="tight")
     plt.close()
 
