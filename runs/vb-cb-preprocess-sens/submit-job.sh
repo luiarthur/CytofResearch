@@ -13,8 +13,12 @@
 
 echo "SCRATCH_DIR: $SCRATCH_DIR"
 
-AWS_BUCKET="s3://cytof-vb/vb-cb-psens"
-RESULTS_DIR="results"
+# NOTE: Edit accordingly
+BATCHSIZE=500
+
+SIMNAME="vb-cb-psens-bs${BATCHSIZE}"
+AWS_BUCKET="s3://cytof-vb/${SIMNAME}"
+RESULTS_DIR="results/${SIMNAME}"
 
 # Load these modules
 module load R/R-3.6.1
@@ -38,7 +42,7 @@ NUM_PROCS=40
 # julia run.jl &> $RESULTS_DIR/log.txt &
 
 # Run script.
-julia run.jl $NUM_PROCS &> $RESULTS_DIR/log.txt &
+julia run.jl $NUM_PROCS $BATCHSIZE &> $RESULTS_DIR/log.txt &
 
 
 echo "Job submission time:"

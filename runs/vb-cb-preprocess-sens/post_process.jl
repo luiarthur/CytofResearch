@@ -52,16 +52,21 @@ function get_best_seed_for_p(paths, p; nlast=100)
   return best_seed
 end
 
+### MAIN ###
+# NOTE: Modify this.
+RESULTS_DIR = "results/vb-cb-psens-bs500"
+
 # List of paths to results.
 paths = [joinpath(root, file)
-         for (root, dirs, files) in walkdir("results")
+         for (root, dirs, files) in walkdir(RESULTS_DIR)
          for file in files
          if file == "output.bson"]
 
 # ps used.
 ps = unique([parse(Float64, m.match) for m in match.(r"(?<=p)\d+\.\d+", paths)])
 best_seeds = Dict(p => get_best_seed_for_p(paths, p) for p in ps)
-best_paths = ["results/p$(p)_seed$(s)/output.bson" for (p, s) in best_seeds]
+best_paths = ["$(RESULTS_DIR)/p$(p)_seed$(s)/output.bson"
+              for (p, s) in best_seeds]
 
 # Post process in parallel
 @time status = pmap(postprocess, best_paths, on_error=identity)
