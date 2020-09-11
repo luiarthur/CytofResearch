@@ -1,0 +1,54 @@
+Activating environment at `~/repo/CytofResearch/Project.toml`
+Activating environment at `~/repo/CytofResearch/Project.toml`
+Activating environment at `~/repo/CytofResearch/Project.toml`
+Activating environment at `~/repo/CytofResearch/Project.toml`
+      From worker 5:	Activating environment at `~/repo/CytofResearch/Project.toml`
+      From worker 3:	Activating environment at `~/repo/CytofResearch/Project.toml`
+      From worker 4:	Activating environment at `~/repo/CytofResearch/Project.toml`
+      From worker 2:	Activating environment at `~/repo/CytofResearch/Project.toml`
+      From worker 2:	Activating environment at `~/repo/CytofResearch/Project.toml`
+      From worker 4:	Activating environment at `~/repo/CytofResearch/Project.toml`
+      From worker 3:	Activating environment at `~/repo/CytofResearch/Project.toml`
+      From worker 5:	Activating environment at `~/repo/CytofResearch/Project.toml`
+      From worker 2:	Processing: results/p0.95_seed6/output.bson
+      From worker 3:	Processing: results/p0.85_seed1/output.bson
+      From worker 5:	Processing: results/p0.99_seed8/output.bson
+      From worker 4:	Processing: results/p0.9_seed3/output.bson
+      From worker 2:	sampling lambda: 1/30sampling lambda: 2/30sampling lambda: 3/30sampling lambda: 4/30sampling lambda: 5/30sampling lambda: 6/30sampling lambda: 7/30sampling lambda: 8/30sampling lambda: 9/30sampling lambda: 10/30sampling lambda: 11/30sampling lambda: 12/30sampling lambda: 13/30sampling lambda: 14/30sampling lambda: 15/30sampling lambda: 16/30sampling lambda: 17/30sampling lambda: 18/30sampling lambda: 19/30sampling lambda: 20/30sampling lambda: 21/30sampling lambda: 22/30sampling lambda: 23/30sampling lambda: 24/30sampling lambda: 25/30sampling lambda: 26/30sampling lambda: 27/30sampling lambda: 28/30sampling lambda: 29/30sampling lambda: 30/30
+      From worker 2:	get lam_est
+      From worker 2:	plot Z1
+      From worker 3:	sampling lambda: 1/30sampling lambda: 2/30sampling lambda: 3/30sampling lambda: 4/30sampling lambda: 5/30sampling lambda: 6/30sampling lambda: 7/30sampling lambda: 8/30sampling lambda: 9/30sampling lambda: 10/30sampling lambda: 11/30sampling lambda: 12/30sampling lambda: 13/30sampling lambda: 14/30sampling lambda: 15/30sampling lambda: 16/30sampling lambda: 17/30sampling lambda: 18/30sampling lambda: 19/30sampling lambda: 20/30sampling lambda: 21/30sampling lambda: 22/30sampling lambda: 23/30sampling lambda: 24/30sampling lambda: 25/30sampling lambda: 26/30sampling lambda: 27/30sampling lambda: 28/30sampling lambda: 29/30sampling lambda: 30/30
+      From worker 3:	get lam_est
+      From worker 3:	plot Z1
+      From worker 2:	plot y1
+      From worker 2:	plot Z2
+      From worker 3:	plot y1
+      From worker 2:	plot y2
+      From worker 4:	sampling lambda: 1/30sampling lambda: 2/30sampling lambda: 3/30sampling lambda: 4/30sampling lambda: 5/30sampling lambda: 6/30sampling lambda: 7/30sampling lambda: 8/30sampling lambda: 9/30sampling lambda: 10/30sampling lambda: 11/30sampling lambda: 12/30sampling lambda: 13/30sampling lambda: 14/30sampling lambda: 15/30sampling lambda: 16/30sampling lambda: 17/30sampling lambda: 18/30sampling lambda: 19/30sampling lambda: 20/30sampling lambda: 21/30sampling lambda: 22/30sampling lambda: 23/30sampling lambda: 24/30sampling lambda: 25/30sampling lambda: 26/30sampling lambda: 27/30sampling lambda: 28/30sampling lambda: 29/30sampling lambda: 30/30
+      From worker 4:	get lam_est
+      From worker 4:	plot Z1
+      From worker 3:	plot Z2
+      From worker 2:	plot Z3
+      From worker 3:	plot y2
+      From worker 2:	plot y3
+      From worker 3:	plot Z3
+      From worker 3:	plot y3
+      From worker 4:	plot y1
+      From worker 4:	plot Z2
+      From worker 4:	plot y2
+      From worker 4:	plot Z3
+      From worker 5:	sampling lambda: 1/30sampling lambda: 2/30sampling lambda: 3/30sampling lambda: 4/30sampling lambda: 5/30sampling lambda: 6/30sampling lambda: 7/30sampling lambda: 8/30sampling lambda: 9/30sampling lambda: 10/30sampling lambda: 11/30sampling lambda: 12/30sampling lambda: 13/30sampling lambda: 14/30sampling lambda: 15/30sampling lambda: 16/30sampling lambda: 17/30sampling lambda: 18/30sampling lambda: 19/30sampling lambda: 20/30sampling lambda: 21/30sampling lambda: 22/30sampling lambda: 23/30sampling lambda: 24/30sampling lambda: 25/30sampling lambda: 26/30sampling lambda: 27/30sampling lambda: 28/30sampling lambda: 29/30sampling lambda: 30/30
+      From worker 5:	get lam_est
+      From worker 5:	plot Z1
+      From worker 4:	plot y3
+      From worker 5:	plot y1
+      From worker 5:	plot Z2
+      From worker 5:	plot y2
+      From worker 5:	plot Z3
+      From worker 5:	plot y3
+136.159836 seconds (16.51 M allocations: 831.336 MiB, 0.89% gc time)
+results/p0.95_seed6/output.bson => status: success
+results/p0.85_seed1/output.bson => status: success
+results/p0.9_seed3/output.bson => status: success
+results/p0.99_seed8/output.bson => status: success
+ALL DONE!
