@@ -57,7 +57,7 @@ best_seeds = Dict(p => get_best_seed_for_p(paths, p) for p in ps)
 best_paths = ["results/p$(p)_seed$(s)/output.bson" for (p, s) in best_seeds]
 
 # Post process in parallel
-status = pmap(postprocess, best_paths, on_error=identity)
+@time status = pmap(postprocess, best_paths, on_error=identity)
 status_sanitized = map(s -> s == nothing ? "success" : s, status)
 
 # Printing success / failure status of runs.

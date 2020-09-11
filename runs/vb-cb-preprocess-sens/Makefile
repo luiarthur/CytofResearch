@@ -18,8 +18,13 @@ preproc:
 sendoutput:
 	aws s3 sync $(RESULTS_DIR) $(AWS_BUCKET) --exclude '*.nfs'
 
-getoutput:
+getalloutput:
 	aws s3 sync $(AWS_BUCKET) $(RESULTS_DIR) --exclude '*.nfs'
+
+getoutput:
+	aws s3 sync $(AWS_BUCKET) $(RESULTS_DIR) \
+		--exclude '*.nfs' \
+		--exclude "*/output.bson"
 
 postproc:
 	julia post_process.jl
