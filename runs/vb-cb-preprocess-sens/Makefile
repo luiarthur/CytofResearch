@@ -3,10 +3,10 @@ SHELL = /bin/bash
 .PHONY: all run preproc sendoutput
 
 # Experiment name
-EXP_NAME = vb-cb-psens
+EXP_NAME = vb-cb-psens-bs2000
 
 # Results dir
-RESULTS_DIR = results
+RESULTS_DIR = results/$(EXP_NAME)
 
 # AWS bucket
 AWS_BUCKET = s3://cytof-vb/$(EXP_NAME)
@@ -27,6 +27,9 @@ getoutput:
 		--exclude "*/output.bson"
 
 postproc:
-	rm -f results/best_seeds.txt
-	julia post_process.jl > results/best_seeds.txt
-	. bundle.sh
+	rm -f $(RESULTS_DIR)/best_seeds.txt
+	julia post_process.jl > $(RESULTS_DIR)/best_seeds.txt
+	. bundle.sh $(RESULTS_DIR)
+
+bundle:
+	. bundle.sh $(RESULTS_DIR)
