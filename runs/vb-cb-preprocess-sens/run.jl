@@ -21,6 +21,7 @@ if length(ARGS) == 0
   SEEDS = [2, 4]
   NITERS = 2000
   BATCHSIZE = 200
+  RESULTS_DIR = "results/test"
 else
   num_proc = parse(Int, ARGS[1])  # 40
   ps = [0.85, 0.9, 0.95, 0.99]
@@ -28,6 +29,7 @@ else
   NITERS = 20000
   # BATCHSIZE = 2000
   BATCHSIZE = parse(Int, ARGS[2])  # 2000, 500
+  RESULTS_DIR = ARGS[3]
 end
 
 # Remove old workers
@@ -37,6 +39,7 @@ rmprocs(filter(w -> w > 1, workers()))
 println("Adding $(num_proc) workers ..."); flush(stdout)
 addprocs(num_proc)
 
+@everywhere RESULTS_DIR = $(RESULTS_DIR)
 @everywhere NITERS = $(NITERS)
 @everywhere BATCHSIZE = $(BATCHSIZE)
 @everywhere function separatesamples(Y)
@@ -67,7 +70,7 @@ println("Finished loading libraries on workers node ..."); flush(stdout)
   end
 
   # Results directory
-  results_dir = "results/p$(p)_seed$(seed)"
+  results_dir = "$(RESULTS_DIR)/p$(p)_seed$(seed)"
   mkpath(results_dir)
 
   # Redirect output

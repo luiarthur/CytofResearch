@@ -33,7 +33,7 @@ echo "This is a healthy sign of life ..."
 echo "This node has `nproc` processors."
 
 # Make output directory.
-mkdir -p results
+mkdir -p $RESULTS_DIR
 
 # Number of processors
 NUM_PROCS=40
@@ -42,7 +42,7 @@ NUM_PROCS=40
 # julia run.jl &> $RESULTS_DIR/log.txt &
 
 # Run script.
-julia run.jl $NUM_PROCS $BATCHSIZE &> $RESULTS_DIR/log.txt &
+julia run.jl $NUM_PROCS $BATCHSIZE $RESULTS_DIR &> $RESULTS_DIR/log.txt &
 
 
 echo "Job submission time:"
