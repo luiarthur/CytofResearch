@@ -46,7 +46,7 @@ function makeplots(; y, path_to_output, nsamps=100, w_thresh=.01, lw=3,
     println("plot Z$(i)")
     PlotUtils.plot_yz.plot_Z(Zmean, Wmean[i, :], lam_est[i], w_thresh=w_thresh,
                              markernames=markernames, fs_cbar=fs_z, fs_w=fs_z,
-                             fs_celltypes=fs_z, fs_markers=fs_z)
+                             fs_celltypes=fs_z, fs_markers=fs_z, fs_lab=fs_z)
     plt.savefig("$(imgdir)/Z$(i).pdf", bbox_inches="tight")
     plt.close()
 
