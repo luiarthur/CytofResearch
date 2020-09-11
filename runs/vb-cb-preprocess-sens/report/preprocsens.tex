@@ -44,15 +44,36 @@
   pdfborder={0 0 0} % removes red box from links
 }
 
-% Title Settings
-\title{Preprocessing Sensitivity Analysis}
-\author{Arthur Lui}
-\date{\today} % \date{} to set date to empty
-
 % MAIN %
 \begin{document}
 
-\maketitle
+{\small Last updated: \today}
+\begin{table}[H]
+   \centering
+   \begin{tabular}{ccc}
+     (a) $\hat Z_1, p=0.85$ &
+     (b) $\hat Z_1, p=0.90$ &
+     (c) $\hat Z_1, p=0.95$ \\
+     \includegraphics[scale=0.3]{../results/p0.85_seed1/img/Z1.pdf} &
+     \includegraphics[scale=0.3]{../results/p0.9_seed10/img/Z1.pdf} &
+     \includegraphics[scale=0.3]{../results/p0.95_seed9/img/Z1.pdf} \\
+     (d) $\hat Z_2, p=0.85$ &
+     (e) $\hat Z_2, p=0.90$ &
+     (f) $\hat Z_2, p=0.95$ \\
+     \includegraphics[scale=0.3]{../results/p0.85_seed1/img/Z2.pdf} &
+     \includegraphics[scale=0.3]{../results/p0.9_seed10/img/Z2.pdf} &
+     \includegraphics[scale=0.3]{../results/p0.95_seed9/img/Z2.pdf} \\
+     (g) $\hat Z_3, p=0.85$ &
+     (h) $\hat Z_3, p=0.90$ &
+     (i) $\hat Z_3, p=0.95$ \\
+     \includegraphics[scale=0.3]{../results/p0.85_seed1/img/Z3.pdf} &
+     \includegraphics[scale=0.3]{../results/p0.9_seed10/img/Z3.pdf} &
+     \includegraphics[scale=0.3]{../results/p0.95_seed9/img/Z3.pdf} \\
+   \end{tabular}
+   \label{tab:psens1}
+   \caption{Sensitivity of estimates $\hat Z_i$ to specification of $p$
+   in preprocessing, for $i=1,2,3$ and $p=0.85, 0.90, 0.95$.}
+\end{table}
 
 
 % Uncomment if using bibliography:

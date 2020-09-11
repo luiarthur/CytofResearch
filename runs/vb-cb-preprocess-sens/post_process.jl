@@ -5,6 +5,13 @@ addprocs(4)
 
 @everywhere include(joinpath(@__DIR__, "../vb-cb/plot_vb_results.jl"))
 
+@everywhere function parse_elbos(f; nlast=100)
+  ms = match.(r"(?<=elbo: )-\d+\.\d+", f)
+  elbos = map(m -> parse(Float64, m.match), filter(m -> !isnothing(m), ms))
+  length(elbos) > nlast || (nlast = 1)
+  return mean(elbos[end - nlast])
+end
+
 @everywhere function separatesamples(Y)
   sample_ids = sort(unique(Y.sample_id))
   return Matrix.(Y[Y.sample_id .== i, Not(:sample_id)]
@@ -32,12 +39,12 @@ end
             markernames=markernames, nlam=30)
 end
 
-function get_best_seed_for_p(paths, p)
+function get_best_seed_for_p(paths, p; nlast=100)
   p_paths = filter(path -> match(Regex(string(p)), path) != nothing, paths)
   elbos = [let
              f = open(readlines, joinpath(dirname(path), "log.txt"))
              seed = parse(Int, match(r"(?<=seed)\d+", path).match)
-             elbo = parse(Float64, match(r"(?<=elbo: )-\d+\.\d+", f[end - 1]).match)
+             elbo = parse_elbos(f, nlast=nlast)
              (elbo, seed)
            end for path in p_paths]
   best_idx = argmax([elbo[1] for elbo in elbos])

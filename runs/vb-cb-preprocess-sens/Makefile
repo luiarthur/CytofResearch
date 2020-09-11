@@ -27,4 +27,5 @@ getoutput:
 		--exclude "*/output.bson"
 
 postproc:
-	julia post_process.jl
+	rm best_seeds.txt
+	julia post_process.jl > best_seeds.txt
