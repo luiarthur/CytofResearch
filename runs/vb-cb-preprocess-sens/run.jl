@@ -26,7 +26,7 @@ else
   ps = [0.85, 0.9, 0.95, 0.99]
   SEEDS = collect(1:10)
   NITERS = 20000
-  BATCHSIZE = 2000
+  BATCHSIZE = 200
 end
 
 # Remove old workers
