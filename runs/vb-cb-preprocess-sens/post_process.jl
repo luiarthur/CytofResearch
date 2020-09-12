@@ -9,7 +9,7 @@ addprocs(4)
   ms = match.(r"(?<=elbo: )-\d+\.\d+", f)
   elbos = map(m -> parse(Float64, m.match), filter(m -> !isnothing(m), ms))
   length(elbos) > nlast || (nlast = 1)
-  return mean(elbos[end - nlast])
+  return mean(elbos[(end-nlast):end])
 end
 
 @everywhere function separatesamples(Y)
