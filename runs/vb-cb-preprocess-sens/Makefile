@@ -3,8 +3,8 @@ SHELL = /bin/bash
 .PHONY: all run preproc sendoutput
 
 # NOTE: Change accordingly.
-# BATCHSIZE = 2000
-BATCHSIZE = 500
+BATCHSIZE = 2000
+# BATCHSIZE = 500
 
 # Experiment name
 EXP_NAME = vb-cb-psens-bs$(BATCHSIZE)

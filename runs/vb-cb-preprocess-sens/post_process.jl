@@ -54,7 +54,8 @@ end
 
 ### MAIN ###
 # NOTE: Modify this.
-RESULTS_DIR = "results/vb-cb-psens-bs500"
+# RESULTS_DIR = "results/vb-cb-psens-bs500"
+RESULTS_DIR = "results/vb-cb-psens-bs2000"
 
 # List of paths to results.
 paths = [joinpath(root, file)

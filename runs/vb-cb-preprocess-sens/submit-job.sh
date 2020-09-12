@@ -14,7 +14,8 @@
 echo "SCRATCH_DIR: $SCRATCH_DIR"
 
 # NOTE: Edit accordingly
-BATCHSIZE=500
+# BATCHSIZE=500
+BATCHSIZE=2000
 
 SIMNAME="vb-cb-psens-bs${BATCHSIZE}"
 AWS_BUCKET="s3://cytof-vb/${SIMNAME}"
