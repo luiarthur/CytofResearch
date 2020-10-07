@@ -21,11 +21,11 @@ Pkg.instantiate()  # Tells julia to install packages in this environment.
 using CytofResearch
 ```
 
-# Author Contributions Checklist Form for A Bayesian Feature Allocation Model for Identification of Cell Subpopulations Using Cytometry Data
+# Author Contributions for A Bayesian Feature Allocation Model for Identification of Cell Subpopulations Using Cytometry Data
 
 ## Data
 
-### Abstract (Mandatory)
+### Abstract
 Three datasets are presented in this work: (1) a  small-sized synthetic
 dataset, (2) a large-sized synthetic dataset, and (3) a cord blood (CB) dataset
 provided by our collaborators at MD Anderson Cancer Center. The synthetic
@@ -37,13 +37,13 @@ comma-separated. The cutoffs for each sample and marker are listed in a
 separate file. More details are provided on the GitHub repository where it
 resides. (See next section.)
 
-### Availability (Mandatory)
+### Availability
 The real cord blood (CB) data used in this work is publicly available at the
 GitHub repository: https://github.com/luiarthur/cytof-data. The data can either
 be cloned as a Git repository, or downloaded as a compressed file. The
 `README.md` in the root directory describes the structure of the repository.
 
-### Description (Mandatory if data available)
+### Description
 - Author permissions: 
     - We have received permission from our collaborators to make the CB data
       used in this work publicly available.
@@ -51,9 +51,9 @@ be cloned as a Git repository, or downloaded as a compressed file. The
     - MIT License
 - Link to data/repository
     - The data and codes are available from
-    - https://github.com/luiarthur/cytof-data.  If needed, we will deposit the
-      data in the JASA Dataverse after acceptance. 
-- Data provenance, including identifier or link to original data if different than above
+    - https://github.com/luiarthur/cytof-data.
+- Data provenance, including identifier or link to original data if different
+  than above
     - The repository contains original CB data, the transformed CB data, and
       the python script used to obtain the transformed data used in the model.
 - File format
@@ -68,21 +68,17 @@ be cloned as a Git repository, or downloaded as a compressed file. The
     - Git branch: master
     - Git commit hash: `ac1d4a02135aca8ff96d75973e63d9a7d45a9884`
 
-### Optional Information (complete as necessary) 
-None.
-
-
 ## Code
-### Abstract (Mandatory)
-A Julia package (CytofResearch) was created for this project, and resides at
+### Abstract
+A Julia package (`CytofResearch`) was created for this project, and resides at
 https://github.com/luiarthur/cytofresearch. Code used for simulation studies
 and the CB data analysis are also included in the repository. 
 
-### Description (Mandatory)
+### Description
  - How delivered: Julia package. The Julia package is not currently available
    on the Julia General Registry, but it can be cloned directly from GitHub.
    The package state (exact versions of library dependencies) are listed in the
-   Project.toml and Manifest.toml files in the root directory. Hence, the
+   `Project.toml` and `Manifest.toml` files in the root directory. Hence, the
    package state can be recreated in Julia. (See
    https://julialang.github.io/Pkg.jl/v1/environments/#Using-someone-else's-project-1)
 - Licensing information: MIT License
@@ -100,17 +96,17 @@ and the CB data analysis are also included in the repository.
       implemented outside of Julia, and for calling libraries not readily
       available in Julia
         - R >= 3.0.0
-            - MClust >= 5.4.2 (for MCMC initialization)
-            - flowCore >= 1.44.2 (for existing method)
-            - FlowSOM >= 1.14.1 (for existing method)
+            - `MClust` >= 5.4.2 (for MCMC initialization)
+            - `flowCore` >= 1.44.2 (for existing method)
+            - `FlowSOM` >= 1.14.1 (for existing method)
         - Python 3.6 or above
-            - matplotlib >= 3.1.0 (for graphing)
-            - seaborn >= 0.9.0 (for graphing)
-            - numpy >= 1.17.3
-            - pandas >= 0.24.2
-            - sklearn >= 0.21.3
+            - `matplotlib` >= 3.1.0 (for graphing)
+            - `seaborn` >= 0.9.0 (for graphing)
+            - `numpy` >= 1.17.3
+            - `pandas` >= 0.24.2
+            - `sklearn` >= 0.21.3
 
-### Optional Information (complete as necessary) 
+### Additional Information
 - Hardware requirements: All computations were done on an interactive  Linux
   server with four Intel Xeon E5-4650 processors (8 cores, 2 threads per core)
   and 512 GB of random access memory. Though the computations for one model run
@@ -120,7 +116,7 @@ and the CB data analysis are also included in the repository.
 
 
 ## Instructions for Use
-### Reproducibility (Mandatory)
+### Reproducibility
 - The `Makefile` at the root of this repository contains commands to
   recreate results from the paper. Typing `make all` at the root of the repository
   (in a terminal) will start the process of running each simulation study / real
@@ -134,7 +130,9 @@ and the CB data analysis are also included in the repository.
     - `make run-flowsom` reproduces the results for the flowsom simulation
       studies and CB analysis. This can be done with one processor in under 10
       minutes.
-    - `make vb-cb` reproduces the results for the variational inference CB analysis for 10 random seeds (starting values). If 10 cores are available this task can be completed in 8-12 hours.
+    - `make vb-cb` reproduces the results for the variational inference CB
+      analysis for 10 random seeds (starting values). If 10 cores are available
+      this task can be completed in 8-12 hours.
     - `make vb-simstuy` reproduces the results for the variational inference
       simulation studies for 10 random seeds (starting values). If 10 cores are
       available this task can be completed in 8-12 hours.
