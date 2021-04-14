@@ -13,17 +13,16 @@ println("Finished compiling libraries on master node ..."); flush(stdout)
 
 using Distributed
 
-# Number of processors to use.
-println("Running in debug mode! This does not reproduce results in paper!")
 flush(stdout)
-num_proc = 5
-# NMCMC = 6000
-# NBURN = 10000
-NMCMC = 6
-NBURN = 10
+# TODO: Use the large numbers
+NMCMC = 6  # 6000
+NBURN = 10  # 10000
 Kmcmcs = [21]  # best K
 seeds = collect(0:4)
 mm = 0
+
+# Number of processors to use.
+num_proc = length(seeds)
 
 # Remove old workers
 rmprocs(filter(w -> w > 1, workers()))
@@ -50,7 +49,7 @@ dat = let
                    for i in sample_ids)
   end
 
-  path_to_data = "../data/cb_transformed_reduced.csv"
+  path_to_data = "../data/cb_transformed_reduced_p0.9.csv"
   Y = coalesce.(CSV.read(path_to_data), NaN)
   y = separatesamples(Y)
 
