@@ -1,6 +1,8 @@
+# NOTE: 
+# This script is used to address Q2 of Referee 1.
+
 println("Master node pid: $(getpid())")
 
-include("../util.jl")
 # Load libraries on master node.
 # NOTE: In theory, this step is not needed. In practice, this step
 # guarantees that libraries are compiled and cached before they
@@ -11,12 +13,14 @@ println("Compile libraries on master node ..."); flush(stdout)
 include("imports.jl")
 println("Finished compiling libraries on master node ..."); flush(stdout)
 
+include("../util.jl")
 using Distributed
+using DrWatson
 
 flush(stdout)
 # TODO: Use the large numbers
-NMCMC = 6  # 6000
-NBURN = 10  # 10000
+NMCMC = 6000
+NBURN = 10000
 Kmcmcs = [21]  # best K
 seeds = collect(0:4)
 mm = 0
@@ -50,13 +54,27 @@ dat = let
   end
 
   path_to_data = "../data/cb_transformed_reduced_p0.9.csv"
-  Y = coalesce.(CSV.read(path_to_data), NaN)
+  Y = coalesce.(CSV.read(path_to_data, DF.DataFrame), NaN)
   y = separatesamples(Y)
 
   CytofResearch.Model.Data(y)
 end
 
-@everywhere function fit(Kmcmc::Int, nmcmc::Int, nburn::Int, dat, mm::Int, seed::Int)
+# Simulation settings.
+sim_configs = dict_list(Dict(:nmcmc => NMCMC, :nburn => NBURN,
+                             :Kmcmc => Kmcmcs, :seed => seeds, :dat => dat,
+                             :mm => mm))
+
+println("Number of simulations: ", length(sim_configs))
+
+@everywhere function fit(config)
+  Kmcmc = config[:Kmcmc]
+  nmcmc = config[:nmcmc]
+  nburn = config[:nburn]
+  dat = config[:dat]
+  mm = config[:mm]
+  seed = config[:seed]
+
   # Directory to store output.
   output_dir = "results/revisions/cb-runs/mm_$(mm)/Kmcmc_$(Kmcmc)/seed_$(seed)"
 
@@ -130,20 +148,16 @@ end
 
 # Run the thing in parallel
 numjobs = length(Kmcmcs)
-status = pmap(fit,
-              Kmcmcs, fill(NMCMC, numjobs),
-              fill(NBURN, numjobs), fill(dat, numjobs),
-              fill(mm, numjobs), seeds,
-              on_error=identity)
+status = pmap(fit, sim_configs, on_error=identity)
 status_sanitized = map(s -> s == nothing ? "success" : s, status)
 
 # Printing success / failure status of runs.
-for (K, s) in zip(Kmcmcs, status_sanitized)
-  println("Kmcmc: $(K) => status: $(s)")
+for idx in eachindex(sim_configs)
+  println("sim $(idx) => status: $(status_sanitized[idx])")
 end
 
 println("ALL DONE!")
 
 # Push results to s3.
 awsbucket ="s3://cytof-cb-results/cb-paper/revisions/"
-s3sync(from="results/revisions", to=awsbucket, tags=`--exclude '*.nfs'`)
+s3sync(from="results/revisions", to=awsbucket, tags=`--exclude '*.nfs*'`)
