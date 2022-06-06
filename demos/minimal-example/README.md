@@ -129,7 +129,8 @@ contains information about the sizes of the matrices in `simdat[:y]`.
 `constants` contains information such as the number of latent features (`K`)
 and the number of mixture model components (`L`) for estimating the density of
 the marker expression patterns. Other information in `constants` are related
-to priors and the missing mechanism.
+to priors and the missing mechanism. We direct users to the paper for guidance 
+on selecting priors.
 
 ```julia
 # Create model object for analysis.
@@ -166,6 +167,14 @@ MCMC. The result is a dicionary containing
 - `:init`: the initial value
 - `:loglike`: a trace of the loglikelihood
 
+The number of MCMC iterations is computed as `nmcmc * thin + nburn`. The number
+of iterations should be large enough such that the MCMC has a good chance of
+convergence. With traces of the log likelihood (`loglike`) from multiple runs,
+one can visually inspect whether the chains have converged. In the simulation
+studies and real data analysis in the paper, we observed that a burn-in period
+of 10000 iterations was sufficient for the chain to reach stationarity. Though,
+the burn-in period could be different for each application.
+
 ```julia
 # Fit FAM.
 results = CytofResearch.Model.cytof_fit(
@@ -174,5 +183,6 @@ results = CytofResearch.Model.cytof_fit(
   dat;  # data for model.
 	nmcmc=1000,  # number of samples.
   nburn=10000,  # number of iterations to discard.
+  thin=2,  # number of iterations to thin by after burn in.
 )
 ```
