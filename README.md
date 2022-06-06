@@ -133,7 +133,7 @@ and the CB data analysis are also included in the repository.
     - `make vb-cb` reproduces the results for the variational inference CB
       analysis for 10 random seeds (starting values). If 10 cores are available
       this task can be completed in 8-12 hours.
-    - `make vb-simstuy` reproduces the results for the variational inference
+    - `make vb-simstudy` reproduces the results for the variational inference
       simulation studies for 10 random seeds (starting values). If 10 cores are
       available this task can be completed in 8-12 hours.
 - All computations in this project were performed on an interactive Linux
