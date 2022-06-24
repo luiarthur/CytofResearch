@@ -171,7 +171,8 @@ MCMC. The result is a dicionary containing
 The number of MCMC iterations is computed as `nmcmc * thin + nburn`. The number
 of iterations should be large enough such that the MCMC has a good chance of
 convergence. With traces of the log likelihood (`loglike`) from multiple runs,
-one can visually inspect whether the chains have converged. In the simulation
+one can visually inspect whether the chains have converged, by noting if trace plots 
+of the likelihoods trace out a common distribution. In the simulation
 studies and real data analysis in our [paper][1], we observed that a burn-in period
 of 10000 iterations was sufficient for the chain to reach stationarity. Though,
 the burn-in period could be different for each application.
