@@ -129,7 +129,7 @@ contains information about the sizes of the matrices in `simdat[:y]`.
 `constants` contains information such as the number of latent features (`K`)
 and the number of mixture model components (`L`) for estimating the density of
 the marker expression patterns. Other information in `constants` are related
-to priors and the missing mechanism. We direct users to the paper for guidance 
+to priors and the missing mechanism. We direct users to the for guidance 
 on selecting priors.
 
 ```julia
@@ -150,8 +150,9 @@ L = Dict(0 => 5, 1 => 5)  # number of mixture model components for density estim
 )
 ```
 
-Initialization of the `mu` stars is done via the mclust package, as indicated in the paper.
-The following method does the initialization.
+Initialization of the `mu` stars is done via the mclust package, as indicated
+our the [paper](https://arxiv.org/abs/2002.08609).
+The following method initializes model parameters for the MCMC.
 ```julia
 # Initialize MCMC cleverly..
 println("Smart initializing ..."); flush(stdout)
@@ -178,10 +179,10 @@ the burn-in period could be different for each application.
 ```julia
 # Fit FAM.
 results = CytofResearch.Model.cytof_fit(
-	init,  # Initial value.
+  init,  # Initial value.
   c,  # model constants.
   dat;  # data for model.
-	nmcmc=1000,  # number of samples.
+  nmcmc=1000,  # number of samples.
   nburn=10000,  # number of iterations to discard.
   thin=2,  # number of iterations to thin by after burn in.
 )
