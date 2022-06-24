@@ -151,7 +151,7 @@ L = Dict(0 => 5, 1 => 5)  # number of mixture model components for density estim
 ```
 
 Initialization of the `mu` stars is done via the mclust package, as indicated
-our the [paper](https://arxiv.org/abs/2002.08609).
+our [paper][1].
 The following method initializes model parameters for the MCMC.
 ```julia
 # Initialize MCMC cleverly..
@@ -172,7 +172,7 @@ The number of MCMC iterations is computed as `nmcmc * thin + nburn`. The number
 of iterations should be large enough such that the MCMC has a good chance of
 convergence. With traces of the log likelihood (`loglike`) from multiple runs,
 one can visually inspect whether the chains have converged. In the simulation
-studies and real data analysis in the paper, we observed that a burn-in period
+studies and real data analysis in our [paper][1], we observed that a burn-in period
 of 10000 iterations was sufficient for the chain to reach stationarity. Though,
 the burn-in period could be different for each application.
 
@@ -187,3 +187,5 @@ results = CytofResearch.Model.cytof_fit(
   thin=2,  # number of iterations to thin by after burn in.
 )
 ```
+
+[1]: https://arxiv.org/abs/2002.08609
